@@ -1,0 +1,1646 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VALENCE LUXE — The International Ultra-Premium E-Commerce Marketplace</title>
+  <meta name="description" content="VALENCE LUXE is the world's premier multi-seller luxury marketplace, connecting discerning customers, boutique creators, and enterprise brands across electronics, haute couture, design, and audio.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="app-body">
+
+  <!-- ====================================================================
+       TOP TICKER / ANNOUNCEMENT BAR
+  ==================================================================== -->
+  <div class="announcement-bar">
+    <div class="container announcement-inner">
+      <div class="announcement-left">
+        <span class="badge-pulsing"><span class="pulse-dot"></span> GLOBAL LUXURY CONCIERGE</span>
+        <span class="announcement-text">Complimentary Worldwide Insured Express Delivery on Orders Over $250</span>
+      </div>
+      <div class="announcement-right">
+        <span class="announcement-link" onclick="switchView('seller-center')"><i class="icon-store"></i> Become a Verified Seller</span>
+        <span class="divider">|</span>
+        <span class="announcement-link" onclick="switchView('admin-center')"><i class="icon-shield"></i> Admin Portal</span>
+        <span class="divider">|</span>
+        <div class="currency-selector">
+          <select id="currency-select" aria-label="Select Currency">
+            <option value="USD">USD ($)</option>
+            <option value="EUR">EUR (€)</option>
+            <option value="GBP">GBP (£)</option>
+            <option value="JPY">JPY (¥)</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====================================================================
+       STICKY PREMIUM NAVBAR
+  ==================================================================== -->
+  <header class="navbar-header" id="main-navbar">
+    <div class="container navbar-container">
+      
+      <!-- Brand Logo -->
+      <div class="navbar-brand" onclick="switchView('marketplace')">
+        <div class="brand-symbol">
+          <div class="symbol-ring"></div>
+          <span class="symbol-core">V</span>
+        </div>
+        <div class="brand-text">
+          <span class="brand-name">VALENCE</span>
+          <span class="brand-tag">LUXE MARKETPLACE</span>
+        </div>
+      </div>
+
+      <!-- Categories Mega Menu Trigger -->
+      <div class="category-trigger-wrap">
+        <button class="btn-category-trigger" id="btn-category-toggle" onclick="toggleCategoryDrawer()">
+          <span class="hamburger-icon"><span></span><span></span><span></span></span>
+          <span class="category-label">Collections</span>
+          <i class="chevron-icon">▼</i>
+        </button>
+      </div>
+
+      <!-- Central Intelligent Search Bar -->
+      <div class="nav-search-wrapper" id="nav-search-container">
+        <div class="search-input-box">
+          <span class="search-lens-icon">⚲</span>
+          <input 
+            type="text" 
+            id="global-search-input" 
+            placeholder="Search bespoke audio, Swiss watches, designer apparel, gaming..." 
+            autocomplete="off"
+            aria-label="Search Marketplace Products and Sellers"
+          >
+          <button class="search-clear-btn" id="search-clear-btn" onclick="clearSearch()" style="display:none;">✕</button>
+          <div class="search-shortcut"><kbd>⌘K</kbd></div>
+        </div>
+
+        <!-- Intelligent Live Search Results Dropdown -->
+        <div class="search-dropdown-menu" id="search-dropdown" style="display: none;">
+          <div class="search-dropdown-header">
+            <div class="search-tags-label">Trending Searches</div>
+            <div class="search-tags" id="popular-search-tags">
+              <span class="tag-chip" onclick="applySearchQuery('Acoustic')">Acoustic</span>
+              <span class="tag-chip" onclick="applySearchQuery('Chronograph')">Chronograph</span>
+              <span class="tag-chip" onclick="applySearchQuery('OLED')">OLED</span>
+              <span class="tag-chip" onclick="applySearchQuery('Cashmere')">Cashmere</span>
+              <span class="tag-chip" onclick="applySearchQuery('Titanium')">Titanium</span>
+            </div>
+          </div>
+          <div class="search-results-section" id="search-results-content">
+            <!-- Dynamic search results populated by JS -->
+          </div>
+          <div class="search-dropdown-footer">
+            <span class="search-hint"><kbd>↑</kbd> <kbd>↓</kbd> to navigate</span>
+            <span class="search-hint"><kbd>ESC</kbd> to close</span>
+            <a href="#catalog-section" class="search-view-all" onclick="submitSearch()">View all results →</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Nav Actions & Portals Switcher -->
+      <div class="navbar-actions">
+        
+        <!-- Portal Quick Links -->
+        <nav class="portal-nav-links">
+          <button class="nav-portal-btn active" id="nav-btn-market" onclick="switchView('marketplace')">Marketplace</button>
+          <button class="nav-portal-btn" id="nav-btn-seller" onclick="switchView('seller-center')">Seller Center</button>
+          <button class="nav-portal-btn" id="nav-btn-admin" onclick="switchView('admin-center')">Admin Control</button>
+        </nav>
+
+        <!-- Theme Toggle -->
+        <button class="btn-icon-pill" id="theme-toggle-btn" onclick="toggleTheme()" title="Toggle Dark/Light Mode" aria-label="Toggle Theme">
+          <span id="theme-icon">🌙</span>
+        </button>
+
+        <!-- Compare Trigger -->
+        <button class="btn-icon-pill has-badge" onclick="openCompareModal()" title="Compare Products" aria-label="Product Comparison">
+          <span class="nav-icon">⚖️</span>
+          <span class="nav-badge" id="compare-count-badge">0</span>
+        </button>
+
+        <!-- Wishlist Trigger -->
+        <button class="btn-icon-pill has-badge" onclick="switchView('customer-dashboard'); showCustomerTab('wishlist');" title="Saved Wishlist" aria-label="Wishlist">
+          <span class="nav-icon">🤍</span>
+          <span class="nav-badge" id="wishlist-count-badge">0</span>
+        </button>
+
+        <!-- Cart Trigger (Opens Multi-Seller Drawer) -->
+        <button class="btn-cart-premium" id="cart-drawer-trigger" onclick="toggleCartDrawer()" aria-label="Open Shopping Bag">
+          <div class="cart-icon-wrap">
+            <span class="cart-icon">🛍️</span>
+            <span class="cart-pulse-badge" id="cart-count-badge">0</span>
+          </div>
+          <div class="cart-label-wrap">
+            <span class="cart-label-title">Bag</span>
+            <span class="cart-label-amount" id="cart-nav-total">$0.00</span>
+          </div>
+        </button>
+
+        <!-- Account Avatar / Portal Trigger -->
+        <button class="btn-avatar-pill" onclick="switchView('customer-dashboard')" title="Customer Portal" aria-label="Customer Profile">
+          <div class="user-avatar-img">JD</div>
+          <span class="user-greeting">John D.</span>
+        </button>
+
+      </div>
+    </div>
+
+    <!-- Category Sliding Sub-nav Bar -->
+    <div class="category-subnav" id="category-subnav">
+      <div class="container subnav-container">
+        <div class="subnav-items-scroll" id="category-chips-list">
+          <button class="cat-pill active" onclick="filterByCategory('all')">✨ All Departments</button>
+          <button class="cat-pill" onclick="filterByCategory('Electronics')">⚡ Electronics & Flagships</button>
+          <button class="cat-pill" onclick="filterByCategory('Audio')">🎧 Bespoke Hi-Fi Audio</button>
+          <button class="cat-pill" onclick="filterByCategory('Fashion')">💎 Haute Couture & Watches</button>
+          <button class="cat-pill" onclick="filterByCategory('Home')">🛋️ Architectural Living</button>
+          <button class="cat-pill" onclick="filterByCategory('Gaming')">🎮 Cybernetic Gaming</button>
+          <button class="cat-pill" onclick="filterByCategory('Automotive')">🏎️ Supercar Accessories</button>
+          <button class="cat-pill" onclick="filterByCategory('Beauty')">✨ Alchemy & Grooming</button>
+          <button class="cat-pill" onclick="filterByCategory('Shoes')">👟 Shoes & Footwear</button>
+          <button class="cat-pill" onclick="filterByCategory('Accessories')">💍 Jewelry & Accessories</button>
+        </div>
+        <div class="subnav-quick-filters">
+          <button class="quick-filter-link" onclick="scrollToFlashSale()"><span class="sale-flame">🔥</span> Flash Deals</button>
+          <button class="quick-filter-link" onclick="filterByVerifiedSellers()"><span class="verified-icon">🛡️</span> Verified Sellers</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ====================================================================
+       MAIN APPLICATION CONTAINER (DYNAMIC VIEWS)
+  ==================================================================== -->
+  <main id="app-viewport">
+
+    <!-- ================================================================
+         VIEW 1: CUSTOMER MARKETPLACE (HOMEPAGE + CATALOG)
+    ================================================================ -->
+    <div class="view-panel active" id="view-marketplace">
+      
+      <!-- HERO SECTION: CINEMATIC LUXURY -->
+      <section class="hero-marketplace">
+        <div class="hero-ambient-glow glow-blue"></div>
+        <div class="hero-ambient-glow glow-violet"></div>
+        <div class="container hero-grid">
+          
+          <div class="hero-content">
+            <div class="hero-pill-badge">
+              <span class="badge-spark">✦</span>
+              <span>VALENCE AUTUMN/WINTER '26 CURATION</span>
+            </div>
+            <h1 class="hero-title">
+              Everything You Want.<br>
+              <span class="gradient-text-accent">One Sovereign Marketplace.</span>
+            </h1>
+            <p class="hero-lead">
+              Immerse yourself in direct artisan provenance and pinnacle engineering. Connect with vetted global ateliers, verified technology labs, and luxury design houses with insured concierge delivery.
+            </p>
+
+            <div class="hero-cta-group">
+              <a href="#catalog-section" class="btn-primary-gradient" onclick="smoothScrollTo('catalog-section')">
+                <span>Explore The Collection</span>
+                <span class="btn-arrow">→</span>
+              </a>
+              <button class="btn-glass-secondary" onclick="scrollToFlashSale()">
+                <span class="sale-icon">⚡</span>
+                <span>View Limited Flash Drops</span>
+              </button>
+            </div>
+
+            <!-- Live Platform Key Metrics -->
+            <div class="hero-stats-row">
+              <div class="hero-stat-card">
+                <span class="stat-num" id="hero-stat-sellers">148+</span>
+                <span class="stat-caption">Vetted Global Ateliers</span>
+              </div>
+              <div class="hero-stat-divider"></div>
+              <div class="hero-stat-card">
+                <span class="stat-num" id="hero-stat-products">2,400+</span>
+                <span class="stat-caption">Curated Masterpieces</span>
+              </div>
+              <div class="hero-stat-divider"></div>
+              <div class="hero-stat-card">
+                <span class="stat-num">99.98%</span>
+                <span class="stat-caption">Fulfillment Score</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Hero Right: Interactive Floating Luxury Showcase -->
+          <div class="hero-visual">
+            <div class="hero-card-stack">
+              
+              <!-- Floating Lead Masterpiece Card -->
+              <div class="floating-hero-card lead-card" onclick="openProductModal(1)">
+                <div class="hero-card-image-wrap">
+                  <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=800&auto=format&fit=crop&q=80" alt="Apex Horizon Wireless Studio Headphones" class="hero-card-img" loading="eager">
+                  <span class="floating-tag">Curator's Pick</span>
+                </div>
+                <div class="hero-card-info">
+                  <div class="hero-card-meta">
+                    <span class="seller-tag"><span class="shield-mini">🛡️</span> Apex Luxe Audio</span>
+                    <div class="star-rating-pill">★ 4.98</div>
+                  </div>
+                  <h3 class="hero-card-name">Apex Horizon Titanium Studio Master ANC</h3>
+                  <div class="hero-card-price-row">
+                    <span class="current-price">$649.00</span>
+                    <span class="hero-card-action">Quick View ↗</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Floating Micro Card 1: Chronograph -->
+              <div class="floating-badge-card badge-card-top" onclick="openProductModal(3)">
+                <div class="badge-avatar-wrap">
+                  <img src="https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=400&auto=format&fit=crop&q=80" alt="Vanguard Chrono" class="badge-avatar">
+                </div>
+                <div class="badge-card-text">
+                  <span class="badge-card-title">Vanguard Celestial Chrono</span>
+                  <span class="badge-card-subtitle">Limited to 500 Pieces</span>
+                  <span class="badge-card-val">$1,890.00</span>
+                </div>
+              </div>
+
+              <!-- Floating Micro Card 2: Security & Escrow -->
+              <div class="floating-badge-card badge-card-bottom">
+                <div class="security-chip-icon">💎</div>
+                <div class="badge-card-text">
+                  <span class="badge-card-title">100% Escrow Authenticated</span>
+                  <span class="badge-card-subtitle">Insured Transit to Doorstep</span>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ============================================================
+           06: TRUST & VALUE STRIP
+      ============================================================ -->
+      <section class="trust-strip-section">
+        <div class="container trust-strip-grid">
+          
+          <div class="trust-item">
+            <div class="trust-icon-box"><i class="t-icon">🛡️</i></div>
+            <div class="trust-text">
+              <h4 class="trust-title">Vetted Master Sellers</h4>
+              <p class="trust-desc">Rigorous 7-point atelier verification & provenance audit.</p>
+            </div>
+          </div>
+
+          <div class="trust-item">
+            <div class="trust-icon-box"><i class="t-icon">✈️</i></div>
+            <div class="trust-text">
+              <h4 class="trust-title">Insured Global Transit</h4>
+              <p class="trust-desc">Full-value courier coverage via DHL Express & FedEx Priority.</p>
+            </div>
+          </div>
+
+          <div class="trust-item">
+            <div class="trust-icon-box"><i class="t-icon">💳</i></div>
+            <div class="trust-text">
+              <h4 class="trust-title">Safe Marketplace Escrow</h4>
+              <p class="trust-desc">Funds disbursed to seller only after your inspection approval.</p>
+            </div>
+          </div>
+
+          <div class="trust-item">
+            <div class="trust-icon-box"><i class="t-icon">🔄</i></div>
+            <div class="trust-text">
+              <h4 class="trust-title">Bespoke 30-Day Returns</h4>
+              <p class="trust-desc">Complimentary white-glove doorstep courier pick up.</p>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ============================================================
+           07: FEATURED CURATED CATEGORIES
+      ============================================================ -->
+      <section class="categories-section">
+        <div class="container">
+          <div class="section-header-flex">
+            <div>
+              <span class="section-pre-title">ARCHITECTURAL DOMAINS</span>
+              <h2 class="section-heading">Browse Curated Ateliers</h2>
+            </div>
+            <div class="category-slider-nav">
+              <span class="caption-text">8 Specialized Collections</span>
+            </div>
+          </div>
+
+          <div class="category-grid" id="featured-categories-grid">
+            <!-- Populated dynamically by JS -->
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================
+           09: LIMITED-TIME FLASH SALE WITH LIVE COUNTDOWN
+      ============================================================ -->
+      <section class="flash-sale-section" id="flash-sale-section">
+        <div class="container">
+          <div class="flash-sale-banner">
+            <div class="flash-sale-left">
+              <div class="flash-badge-row">
+                <span class="flash-pill">⚡ PRIORITY FLASH DROP</span>
+                <span class="flash-sub">Tier 1 Rare Inventory</span>
+              </div>
+              <h2 class="flash-title">Limited Midnight Allocations</h2>
+              <p class="flash-desc">Direct factory reserves unlocked at exclusive patron pricing. Expires automatically when reserve hits 0%.</p>
+            </div>
+
+            <!-- Countdown Timer Display -->
+            <div class="flash-countdown-box">
+              <span class="countdown-label">ALLOCATION WINDOW CLOSES IN:</span>
+              <div class="countdown-digits" id="flash-countdown">
+                <div class="countdown-block"><span class="digits" id="cd-hours">07</span><span class="label">HRS</span></div>
+                <span class="cd-colon">:</span>
+                <div class="countdown-block"><span class="digits" id="cd-minutes">42</span><span class="label">MIN</span></div>
+                <span class="cd-colon">:</span>
+                <div class="countdown-block"><span class="digits" id="cd-seconds">19</span><span class="label">SEC</span></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Flash Sale Product Carousel / Grid -->
+          <div class="flash-products-grid" id="flash-products-grid">
+            <!-- Populated dynamically by JS -->
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================
+           MAIN CATALOG SECTION: FILTER, SEARCH & DISCOVERY
+      ============================================================ -->
+      <section class="catalog-section" id="catalog-section">
+        <div class="container">
+          
+          <div class="catalog-controls-bar">
+            <div class="catalog-heading-wrap">
+              <span class="section-pre-title">CURATED CATALOG</span>
+              <h2 class="section-heading" id="catalog-heading">All Marketplace Masterpieces</h2>
+              <span class="results-counter" id="catalog-results-count">Showing 24 of 24 creations</span>
+            </div>
+
+            <!-- Sorting & Filter Controls -->
+            <div class="catalog-actions-wrap">
+              
+              <!-- Filter by Availability -->
+              <div class="filter-pill-dropdown">
+                <select id="filter-stock-select" onchange="applyCatalogFilters()" aria-label="Filter by Stock">
+                  <option value="all">Availability: All Items</option>
+                  <option value="in-stock">In Stock Only</option>
+                  <option value="on-sale">On Sale / Deals</option>
+                </select>
+              </div>
+
+              <!-- Filter by Price Tier -->
+              <div class="filter-pill-dropdown">
+                <select id="filter-price-select" onchange="applyCatalogFilters()" aria-label="Filter by Price Tier">
+                  <option value="all">Price: All Ranges</option>
+                  <option value="under-250">Under $250</option>
+                  <option value="250-1000">$250 — $1,000</option>
+                  <option value="over-1000">Over $1,000</option>
+                </select>
+              </div>
+
+              <!-- Sorting Dropdown -->
+              <div class="filter-pill-dropdown">
+                <select id="sort-select" onchange="applyCatalogFilters()" aria-label="Sort Catalog Items">
+                  <option value="curated">Sort: Curator's Recommendation</option>
+                  <option value="price-asc">Price: Low to High</option>
+                  <option value="price-desc">Price: High to Low</option>
+                  <option value="rating">Patron Rating: Highest First</option>
+                  <option value="newest">Newest Additions</option>
+                </select>
+              </div>
+
+              <!-- Quick Add Product Button in Catalog Bar -->
+              <button class="btn-primary-gradient btn-add-prod-catalog" onclick="openAddProductModal()" title="Add New Product to Catalog">
+                <span>+ Add Product</span>
+              </button>
+
+            </div>
+          </div>
+
+          <!-- Active Filter Chips Bar -->
+          <div class="active-filter-chips" id="active-filter-chips" style="display:none;">
+            <span class="filter-tag-title">Active Filters:</span>
+            <div class="filter-tags-container" id="filter-tags-list"></div>
+            <button class="clear-all-filters-btn" onclick="resetAllFilters()">Clear All</button>
+          </div>
+
+          <!-- Product Grid -->
+          <div class="product-cards-grid" id="main-product-grid">
+            <!-- Dynamically populated by JS -->
+          </div>
+
+          <!-- Empty State (Hidden by default) -->
+          <div class="empty-state-card" id="catalog-empty-state" style="display:none;">
+            <div class="empty-icon">🔍</div>
+            <h3 class="empty-title">No Matching Masterpieces Found</h3>
+            <p class="empty-desc">We couldn't locate any products matching your specific query or filter combination.</p>
+            <button class="btn-primary-gradient" onclick="resetAllFilters()">Reset All Filters</button>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ============================================================
+           FEATURED BRAND / ATELIER SPOTLIGHT
+      ============================================================ -->
+      <section class="seller-spotlight-section">
+        <div class="container">
+          <div class="section-header-flex">
+            <div>
+              <span class="section-pre-title">DISTINGUISHED SELLERS</span>
+              <h2 class="section-heading">Verified Global Ateliers</h2>
+            </div>
+            <button class="btn-outline-glass" onclick="switchView('seller-center')">Join As a Seller Atelier →</button>
+          </div>
+
+          <div class="sellers-cards-grid" id="verified-sellers-grid">
+            <!-- Populated dynamically by JS -->
+          </div>
+        </div>
+      </section>
+
+    </div> <!-- END VIEW 1: MARKETPLACE -->
+
+
+    <!-- ================================================================
+         VIEW 2: SELLER CENTER (VENDOR PORTAL)
+    ================================================================ -->
+    <div class="view-panel" id="view-seller-center">
+      <div class="container seller-dashboard-wrap">
+        
+        <!-- Seller Center Top Header -->
+        <div class="seller-header-banner">
+          <div class="seller-info-group">
+            <div class="seller-avatar-large">🛡️</div>
+            <div>
+              <div class="seller-badge-top"><span class="badge-green">VERIFIED TIER-1 ATELIER</span> ID: #ATELIER-0491</div>
+              <h1 class="seller-store-name" id="seller-portal-store-name">Apex Luxe Audio Lab</h1>
+              <p class="seller-store-meta">Zurich, Switzerland • Member since 2023 • 99.8% On-Time Fulfillment • <span class="rating-stars">★★★★★ 4.96</span></p>
+            </div>
+          </div>
+          <div class="seller-actions-group">
+            <button class="btn-outline-glass" onclick="switchView('marketplace')">← Customer Marketplace</button>
+            <button class="btn-primary-gradient" onclick="openAddProductModal()">
+              <span>+ Add New Product</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Seller Performance Metric Cards -->
+        <div class="seller-metrics-grid">
+          
+          <div class="metric-card">
+            <div class="metric-header">
+              <span class="metric-title">Gross Store Revenue</span>
+              <span class="metric-trend trend-up">↑ +28.4%</span>
+            </div>
+            <div class="metric-value" id="seller-stat-revenue">$148,920.00</div>
+            <div class="metric-footer">Net payout ready: <strong>$22,410.00</strong></div>
+          </div>
+
+          <div class="metric-card">
+            <div class="metric-header">
+              <span class="metric-title">Orders Dispatched</span>
+              <span class="metric-trend trend-up">↑ +14.2%</span>
+            </div>
+            <div class="metric-value" id="seller-stat-orders">384</div>
+            <div class="metric-footer">Pending fulfillment: <strong>3 orders</strong></div>
+          </div>
+
+          <div class="metric-card">
+            <div class="metric-header">
+              <span class="metric-title">Catalog Volume</span>
+              <span class="metric-trend">Total SKUs</span>
+            </div>
+            <div class="metric-value" id="seller-stat-products">18 Products</div>
+            <div class="metric-footer">Low stock alert: <strong>2 SKUs</strong></div>
+          </div>
+
+          <div class="metric-card">
+            <div class="metric-header">
+              <span class="metric-title">Escrow Settlement Rating</span>
+              <span class="metric-badge-score">Tier 1</span>
+            </div>
+            <div class="metric-value">99.8%</div>
+            <div class="metric-footer">Zero chargebacks in last 180 days</div>
+          </div>
+
+        </div>
+
+        <!-- Analytics Visual Chart (Pure SVG Responsive) -->
+        <div class="seller-analytics-card">
+          <div class="analytics-card-header">
+            <div>
+              <h3 class="card-title">30-Day Revenue & Order Trajectory</h3>
+              <p class="card-subtitle">Real-time settlement stream from international transactions</p>
+            </div>
+            <div class="timeframe-pills">
+              <button class="time-pill active">30 Days</button>
+              <button class="time-pill">90 Days</button>
+              <button class="time-pill">1 Year</button>
+            </div>
+          </div>
+
+          <div class="svg-chart-container">
+            <svg class="analytics-svg" viewBox="0 0 800 220" preserveAspectRatio="none">
+              <defs>
+                <linearGradient id="chartGrad" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#38bdf8" stop-opacity="0.45" />
+                  <stop offset="100%" stop-color="#818cf8" stop-opacity="0.0" />
+                </linearGradient>
+              </defs>
+              <!-- Grid Lines -->
+              <line x1="0" y1="40" x2="800" y2="40" stroke="rgba(255,255,255,0.06)" stroke-dasharray="4" />
+              <line x1="0" y1="90" x2="800" y2="90" stroke="rgba(255,255,255,0.06)" stroke-dasharray="4" />
+              <line x1="0" y1="140" x2="800" y2="140" stroke="rgba(255,255,255,0.06)" stroke-dasharray="4" />
+              <line x1="0" y1="190" x2="800" y2="190" stroke="rgba(255,255,255,0.06)" stroke-dasharray="4" />
+              <!-- Area Fill -->
+              <path d="M0,170 Q100,120 200,135 T400,85 T600,105 T800,45 L800,200 L0,200 Z" fill="url(#chartGrad)" />
+              <!-- Trajectory Stroke Line -->
+              <path d="M0,170 Q100,120 200,135 T400,85 T600,105 T800,45" fill="none" stroke="#38bdf8" stroke-width="3.5" />
+              <!-- Data Points -->
+              <circle cx="200" cy="135" r="5" fill="#818cf8" stroke="#ffffff" stroke-width="2" />
+              <circle cx="400" cy="85" r="5" fill="#38bdf8" stroke="#ffffff" stroke-width="2" />
+              <circle cx="600" cy="105" r="5" fill="#818cf8" stroke="#ffffff" stroke-width="2" />
+              <circle cx="800" cy="45" r="6" fill="#10b981" stroke="#ffffff" stroke-width="2" />
+            </svg>
+            <div class="chart-labels-row">
+              <span>Week 1</span>
+              <span>Week 2</span>
+              <span>Week 3</span>
+              <span>Week 4 (Current Peak: $38,400)</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Inventory & Catalog Management Table -->
+        <div class="inventory-table-card">
+          <div class="inventory-card-header">
+            <div>
+              <h3 class="card-title">Live Inventory & Pricing Engine</h3>
+              <p class="card-subtitle">Adjust stock reserves, modify list prices, or launch instantaneous flash discounts</p>
+            </div>
+            <div class="inventory-search-wrap">
+              <input type="text" id="seller-inventory-search" placeholder="Search your catalog SKUs..." oninput="filterSellerInventory()">
+            </div>
+          </div>
+
+          <div class="table-responsive">
+            <table class="inventory-table" id="seller-inventory-table">
+              <thead>
+                <tr>
+                  <th>Product Details</th>
+                  <th>Category</th>
+                  <th>Unit Price ($)</th>
+                  <th>Stock Reserved</th>
+                  <th>Stock Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="seller-inventory-tbody">
+                <!-- Dynamically populated by JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+    </div> <!-- END VIEW 2: SELLER CENTER -->
+
+
+    <!-- ================================================================
+         VIEW 3: ADMIN CONTROL CENTER (ENTERPRISE OPERATING SYSTEM)
+    ================================================================ -->
+    <div class="view-panel" id="view-admin-center">
+      <div class="container admin-dashboard-wrap">
+        
+        <!-- Admin Header -->
+        <div class="admin-header-banner">
+          <div>
+            <div class="admin-top-badge"><span class="badge-violet">SUPERADMIN PRIVILEGES</span> SYSTEM STATUS: OPTIMAL</div>
+            <h1 class="admin-title">VALENCE Platform Control & Governance</h1>
+            <p class="admin-subtitle">Real-time marketplace oversight, seller certification, commission yield, and promotions engine</p>
+          </div>
+          <div class="admin-actions-bar">
+            <button class="btn-outline-glass" onclick="switchView('marketplace')">Customer View</button>
+            <button class="btn-primary-gradient" onclick="openAddProductModal()">+ Add Product</button>
+            <button class="btn-outline-glass" onclick="openPromoModal()">+ Create Promo Coupon</button>
+          </div>
+        </div>
+
+        <!-- Enterprise High-Level Metrics -->
+        <div class="admin-metrics-grid">
+          <div class="admin-metric-card">
+            <span class="a-metric-label">Platform GMV (30D)</span>
+            <div class="a-metric-value" id="admin-stat-gmv">$3,842,500.00</div>
+            <span class="a-metric-sub">Marketplace take-rate: <strong>12.5% ($480,312 net yield)</strong></span>
+          </div>
+          <div class="admin-metric-card">
+            <span class="a-metric-label">Active Certified Sellers</span>
+            <div class="a-metric-value" id="admin-stat-sellers">148</div>
+            <span class="a-metric-sub">Pending applications: <strong id="admin-pending-count">2 waiting</strong></span>
+          </div>
+          <div class="admin-metric-card">
+            <span class="a-metric-label">Total Completed Orders</span>
+            <div class="a-metric-value" id="admin-stat-orders">14,290</div>
+            <span class="a-metric-sub">Dispute rate: <strong>0.02% (Excellence standard)</strong></span>
+          </div>
+          <div class="admin-metric-card">
+            <span class="a-metric-label">Registered Patrons</span>
+            <div class="a-metric-value">68,400+</div>
+            <span class="a-metric-sub">Monthly active users: <strong>92.4% retention</strong></span>
+          </div>
+        </div>
+
+        <!-- Admin 2-Column Section: Seller Verification Queue & Promotions Engine -->
+        <div class="admin-grid-2col">
+          
+          <!-- Column 1: Seller Verification & Moderation -->
+          <div class="admin-panel-card">
+            <div class="panel-header">
+              <h3 class="panel-title">Seller Verification & Certification Queue</h3>
+              <span class="panel-tag">Compliance Audit</span>
+            </div>
+            <div class="seller-verification-list" id="admin-seller-verification-list">
+              <!-- Dynamically populated by JS -->
+            </div>
+          </div>
+
+          <!-- Column 2: Active Promotional Coupons Engine -->
+          <div class="admin-panel-card">
+            <div class="panel-header">
+              <h3 class="panel-title">Promotions & Dynamic Discount Engine</h3>
+              <button class="btn-sm-pill" onclick="openPromoModal()">Add New Code</button>
+            </div>
+            <div class="promotions-list" id="admin-promotions-list">
+              <!-- Dynamically populated by JS -->
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Product Moderation & Feature Manager -->
+        <div class="admin-panel-card" style="margin-top: 1.5rem;">
+          <div class="panel-header">
+            <h3 class="panel-title">Marketplace Product Catalog Moderation</h3>
+            <span class="panel-tag">Featured Toggles</span>
+          </div>
+          <div class="table-responsive">
+            <table class="inventory-table">
+              <thead>
+                <tr>
+                  <th>Product SKU</th>
+                  <th>Seller</th>
+                  <th>Price</th>
+                  <th>Curator Featured</th>
+                  <th>Catalog Visibility</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="admin-products-tbody">
+                <!-- Dynamically populated by JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+    </div> <!-- END VIEW 3: ADMIN CENTER -->
+
+
+    <!-- ================================================================
+         VIEW 4: CUSTOMER DASHBOARD & ORDER MANAGEMENT
+    ================================================================ -->
+    <div class="view-panel" id="view-customer-dashboard">
+      <div class="container customer-dashboard-wrap">
+        
+        <!-- Customer Portal Sidebar & Content Layout -->
+        <div class="customer-portal-grid">
+          
+          <!-- Left Navigation Sidebar -->
+          <aside class="customer-sidebar">
+            <div class="customer-profile-card">
+              <div class="customer-avatar-badge">JD</div>
+              <h3 class="customer-name">Johnathan Sterling</h3>
+              <span class="customer-tier-badge">💎 VIP Noir Member</span>
+              <p class="customer-email">johnathan.sterling@valence.luxury</p>
+            </div>
+
+            <nav class="customer-nav-menu">
+              <button class="c-nav-item active" id="c-tab-overview" onclick="showCustomerTab('overview')">
+                <span class="c-icon">📊</span> Overview & Stats
+              </button>
+              <button class="c-nav-item" id="c-tab-orders" onclick="showCustomerTab('orders')">
+                <span class="c-icon">📦</span> Order History (<span id="c-orders-count">2</span>)
+              </button>
+              <button class="c-nav-item" id="c-tab-wishlist" onclick="showCustomerTab('wishlist')">
+                <span class="c-icon">🤍</span> Saved Wishlist (<span id="c-wishlist-count">0</span>)
+              </button>
+              <button class="c-nav-item" id="c-tab-addresses" onclick="showCustomerTab('addresses')">
+                <span class="c-icon">📍</span> Saved Addresses
+              </button>
+              <button class="c-nav-item" id="c-tab-rewards" onclick="showCustomerTab('rewards')">
+                <span class="c-icon">✨</span> Rewards & Vault (4,850 Pts)
+              </button>
+            </nav>
+
+            <div class="sidebar-help-card">
+              <span class="help-badge">24/7 CONCIERGE</span>
+              <p class="help-desc">Need personal assistance with high-value insured orders or bespoke sizing?</p>
+              <button class="btn-outline-glass btn-sm" onclick="showToast('Directing to your Private Luxury Concierge Agent...', 'info')">Contact Concierge</button>
+            </div>
+          </aside>
+
+          <!-- Right Content Panels -->
+          <div class="customer-main-content">
+            
+            <!-- SUBTAB 1: OVERVIEW -->
+            <div class="customer-subtab active" id="subtab-overview">
+              <div class="customer-subtab-header">
+                <h2 class="subtab-title">Patron Dashboard Overview</h2>
+                <span class="subtab-date">Current Session Active</span>
+              </div>
+
+              <div class="customer-stats-cards">
+                <div class="c-stat-box">
+                  <span class="c-stat-title">Lifetime Purchases</span>
+                  <div class="c-stat-num">$8,450.00</div>
+                  <span class="c-stat-sub">12 orders successfully delivered</span>
+                </div>
+                <div class="c-stat-box">
+                  <span class="c-stat-title">Active Orders</span>
+                  <div class="c-stat-num" id="c-active-orders-num">1 In Transit</div>
+                  <span class="c-stat-sub">Express courier delivery tracking</span>
+                </div>
+                <div class="c-stat-box">
+                  <span class="c-stat-title">Concierge Vault Points</span>
+                  <div class="c-stat-num">4,850 pts</div>
+                  <span class="c-stat-sub">Equivalent to $485.00 store credit</span>
+                </div>
+              </div>
+
+              <!-- Recent Order Highlight Card -->
+              <div class="recent-order-highlight-card" id="recent-order-card">
+                <!-- Dynamically populated by JS -->
+              </div>
+            </div>
+
+            <!-- SUBTAB 2: ORDER HISTORY & LIVE TRACKING -->
+            <div class="customer-subtab" id="subtab-orders">
+              <div class="customer-subtab-header">
+                <h2 class="subtab-title">Your Order History & Live Tracking</h2>
+                <p class="subtab-desc">Track real-time multi-carrier progression with live milestone checkpoints</p>
+              </div>
+
+              <div class="orders-list-container" id="customer-orders-list">
+                <!-- Dynamically populated by JS -->
+              </div>
+            </div>
+
+            <!-- SUBTAB 3: WISHLIST -->
+            <div class="customer-subtab" id="subtab-wishlist">
+              <div class="customer-subtab-header">
+                <h2 class="subtab-title">Your Private Wishlist</h2>
+                <p class="subtab-desc">Curated items reserved for your future acquisition</p>
+              </div>
+
+              <div class="wishlist-products-grid" id="customer-wishlist-grid">
+                <!-- Dynamically populated by JS -->
+              </div>
+            </div>
+
+            <!-- SUBTAB 4: ADDRESSES -->
+            <div class="customer-subtab" id="subtab-addresses">
+              <div class="customer-subtab-header">
+                <h2 class="subtab-title">Secure Delivery Addresses</h2>
+                <button class="btn-primary-gradient btn-sm" onclick="showToast('Address added to your secure vault', 'success')">+ Add New Address</button>
+              </div>
+
+              <div class="addresses-grid">
+                <div class="address-card is-default">
+                  <div class="address-tag-row"><span class="badge-green">Primary Residence</span></div>
+                  <h4 class="address-name">Johnathan Sterling</h4>
+                  <p class="address-lines">740 Park Avenue, Apt 14B<br>Upper East Side, New York, NY 10021<br>United States</p>
+                  <p class="address-phone">+1 (212) 555-0194</p>
+                  <div class="address-actions">
+                    <button class="btn-link">Edit Details</button>
+                  </div>
+                </div>
+
+                <div class="address-card">
+                  <div class="address-tag-row"><span class="badge-outline">European Villa</span></div>
+                  <h4 class="address-name">Johnathan Sterling</h4>
+                  <p class="address-lines">Quai Gustave-Ador 28<br>1207 Genève<br>Switzerland</p>
+                  <p class="address-phone">+41 22 555 3820</p>
+                  <div class="address-actions">
+                    <button class="btn-link" onclick="showToast('Set as primary delivery address', 'info')">Set Primary</button>
+                    <button class="btn-link">Edit</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- SUBTAB 5: REWARDS -->
+            <div class="customer-subtab" id="subtab-rewards">
+              <div class="customer-subtab-header">
+                <h2 class="subtab-title">Patron Concierge Vault & Tier Benefits</h2>
+              </div>
+              <div class="vault-card">
+                <div class="vault-header">
+                  <div>
+                    <span class="vault-badge">TIER: NOIR PRIVILÈGE</span>
+                    <h3 class="vault-balance">4,850 Available Points</h3>
+                    <p class="vault-worth">Redeemable for up to $485.00 off any marketplace acquisition.</p>
+                  </div>
+                  <button class="btn-primary-gradient" onclick="applyVaultCredit()">Apply to Next Order</button>
+                </div>
+                <div class="tier-perks-list">
+                  <div class="perk-item">✓ Complimentary White-Glove Valet Delivery on all orders</div>
+                  <div class="perk-item">✓ 48-Hour Priority Window on Rare Limited Timepiece Drops</div>
+                  <div class="perk-item">✓ Direct WhatsApp Link with Dedicated Luxury Portfolio Manager</div>
+                  <div class="perk-item">✓ Zero-Deductible Full Insurance in Transit</div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </div> <!-- END VIEW 4: CUSTOMER DASHBOARD -->
+
+  </main>
+
+  <!-- ====================================================================
+       FOOTER: INTERNATIONAL SOPHISTICATION
+  ==================================================================== -->
+  <footer class="app-footer">
+    <div class="container footer-grid">
+      
+      <div class="footer-brand-col">
+        <div class="navbar-brand">
+          <div class="brand-symbol"><span class="symbol-core">V</span></div>
+          <div class="brand-text">
+            <span class="brand-name">VALENCE</span>
+            <span class="brand-tag">LUXE MARKETPLACE</span>
+          </div>
+        </div>
+        <p class="footer-about">
+          The sovereign multi-seller luxury marketplace. Uniting exceptional artisan creators, bespoke technological engineering, and international collectors under one verified standard.
+        </p>
+        <div class="footer-badges">
+          <span class="f-badge">🔒 256-Bit Escrow Vault</span>
+          <span class="f-badge">🛡️ Authenticated Provenance</span>
+        </div>
+      </div>
+
+      <div class="footer-nav-col">
+        <h4 class="footer-title">Collections</h4>
+        <ul class="footer-links">
+          <li><a href="#catalog-section" onclick="filterByCategory('Electronics')">Flagship Electronics</a></li>
+          <li><a href="#catalog-section" onclick="filterByCategory('Audio')">Bespoke Hi-Fi Audio</a></li>
+          <li><a href="#catalog-section" onclick="filterByCategory('Fashion')">Haute Horlogerie & Fashion</a></li>
+          <li><a href="#catalog-section" onclick="filterByCategory('Home')">Architectural Living</a></li>
+          <li><a href="#catalog-section" onclick="filterByCategory('Gaming')">Cybernetic Gaming</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-nav-col">
+        <h4 class="footer-title">Portals & Sellers</h4>
+        <ul class="footer-links">
+          <li><a href="javascript:void(0)" onclick="switchView('seller-center')">Seller Center Portal</a></li>
+          <li><a href="javascript:void(0)" onclick="switchView('admin-center')">Admin Governance</a></li>
+          <li><a href="javascript:void(0)" onclick="switchView('customer-dashboard')">Patron Dashboard</a></li>
+          <li><a href="javascript:void(0)" onclick="openCompareModal()">Product Comparison</a></li>
+          <li><a href="javascript:void(0)" onclick="toggleCartDrawer()">Multi-Seller Cart</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-nav-col">
+        <h4 class="footer-title">Newsletter & Private Drops</h4>
+        <p class="footer-newsletter-text">Receive confidential private invitations for limited runs and factory allocations.</p>
+        <form class="footer-subscribe-form" onsubmit="event.preventDefault(); handleNewsletterSubscribe();">
+          <input type="email" id="newsletter-email" placeholder="Enter your private email..." required>
+          <button type="submit" class="btn-primary-gradient">Subscribe</button>
+        </form>
+        <span class="newsletter-sub">Strictly private. Never syndicated.</span>
+      </div>
+
+    </div>
+
+    <div class="footer-bottom-bar">
+      <div class="container footer-bottom-inner">
+        <div class="footer-copy">© 2026 VALENCE LUXE INTERNATIONAL S.A. ALL RIGHTS RESERVED.</div>
+        <div class="footer-legal-links">
+          <a href="javascript:void(0)" onclick="showToast('Privacy Policy: All customer data encrypted in zero-knowledge vault', 'info')">Privacy Policy</a>
+          <a href="javascript:void(0)" onclick="showToast('Terms of Escrow: Insured marketplace guarantees active', 'info')">Terms of Escrow</a>
+          <a href="javascript:void(0)" onclick="showToast('Authentication: Guaranteed genuine artisan origin', 'info')">Authenticity Guarantee</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+
+  <!-- ====================================================================
+       OVERLAYS & MODALS
+  ==================================================================== -->
+
+  <!-- 1. MULTI-SELLER CART DRAWER -->
+  <div class="drawer-backdrop" id="cart-drawer-backdrop" onclick="toggleCartDrawer()"></div>
+  <aside class="cart-drawer" id="cart-drawer">
+    <div class="cart-drawer-header">
+      <div class="cart-header-title-group">
+        <h2 class="drawer-title">Shopping Bag</h2>
+        <span class="drawer-item-count" id="cart-drawer-items-count">(0 Items)</span>
+      </div>
+      <button class="drawer-close-btn" onclick="toggleCartDrawer()" aria-label="Close Cart">✕</button>
+    </div>
+
+    <!-- Active Promo Code Callout -->
+    <div class="cart-promo-banner">
+      <span>💡 Use code <strong>VALENCE20</strong> for 20% off or <strong>SUPER100</strong> for $100 off</span>
+    </div>
+
+    <!-- Grouped by Seller Cart Items Container -->
+    <div class="cart-items-scrollable" id="cart-items-container">
+      <!-- Dynamically populated by JS grouped by seller -->
+    </div>
+
+    <!-- Cart Summary & Checkout Trigger -->
+    <div class="cart-drawer-footer" id="cart-drawer-footer">
+      
+      <!-- Coupon Application Form -->
+      <div class="coupon-input-group">
+        <input type="text" id="coupon-code-input" placeholder="Promo / Privilege Code" uppercase>
+        <button class="btn-apply-coupon" onclick="applyCouponCode()">Apply</button>
+      </div>
+      <div class="coupon-status-msg" id="coupon-status-msg"></div>
+
+      <!-- Financial Calculations Breakdown -->
+      <div class="cart-breakdown-row">
+        <span>Cart Subtotal</span>
+        <span id="cart-subtotal-val">$0.00</span>
+      </div>
+      <div class="cart-breakdown-row" id="cart-discount-row" style="display:none;">
+        <span class="discount-label">Privilege Discount</span>
+        <span class="discount-val" id="cart-discount-val">-$0.00</span>
+      </div>
+      <div class="cart-breakdown-row">
+        <span>Combined Seller Shipping</span>
+        <span id="cart-shipping-val">Calculated next</span>
+      </div>
+      <div class="cart-breakdown-row">
+        <span>Estimated Escrow Tax (8.5%)</span>
+        <span id="cart-tax-val">$0.00</span>
+      </div>
+      <div class="cart-total-row">
+        <span>Total Due</span>
+        <span class="cart-grand-total" id="cart-grand-total">$0.00</span>
+      </div>
+
+      <button class="btn-checkout-primary" id="btn-proceed-checkout" onclick="openCheckoutModal()">
+        <span>Proceed to Secure Multi-Seller Checkout</span>
+        <span>→</span>
+      </button>
+
+      <p class="escrow-reassurance">🔒 Protected by VALENCE 100% Escrow Guarantee</p>
+    </div>
+  </aside>
+
+
+  <!-- 2. PRODUCT QUICK VIEW & DETAILS MODAL -->
+  <div class="modal-backdrop" id="product-modal-backdrop" onclick="closeProductModal()"></div>
+  <div class="product-modal-container" id="product-detail-modal">
+    <button class="modal-close-icon" onclick="closeProductModal()" aria-label="Close Product View">✕</button>
+    <div class="product-modal-body" id="product-modal-content">
+      <!-- Dynamically injected product detail content -->
+    </div>
+  </div>
+
+
+  <!-- 3. PRODUCT COMPARISON MODAL / DRAWER -->
+  <div class="modal-backdrop" id="compare-modal-backdrop" onclick="closeCompareModal()"></div>
+  <div class="compare-modal-container" id="compare-modal">
+    <div class="compare-modal-header">
+      <div>
+        <h2 class="drawer-title">Side-by-Side Product Comparison</h2>
+        <p class="drawer-subtitle">Analyze technical specifications, artisan provenance, and pricing</p>
+      </div>
+      <div class="compare-header-actions">
+        <button class="btn-outline-glass btn-sm" onclick="clearComparison()">Clear All</button>
+        <button class="modal-close-icon" onclick="closeCompareModal()">✕</button>
+      </div>
+    </div>
+    <div class="compare-modal-body" id="compare-table-container">
+      <!-- Dynamically populated comparison matrix -->
+    </div>
+  </div>
+
+
+  <!-- 4. MULTI-STEP CHECKOUT WIZARD MODAL -->
+  <div class="modal-backdrop" id="checkout-modal-backdrop" onclick="closeCheckoutModal()"></div>
+  <div class="checkout-modal-container" id="checkout-modal">
+    
+    <div class="checkout-modal-header">
+      <div class="checkout-brand">
+        <span class="brand-symbol-small">V</span>
+        <span>VALENCE SECURE ESCROW CHECKOUT</span>
+      </div>
+      <button class="modal-close-icon" onclick="closeCheckoutModal()">✕</button>
+    </div>
+
+    <!-- Stepper Navigation Bar -->
+    <div class="checkout-stepper">
+      <div class="step-indicator active" id="step-nav-1"><span class="step-num">1</span> Info</div>
+      <div class="step-line"></div>
+      <div class="step-indicator" id="step-nav-2"><span class="step-num">2</span> Delivery</div>
+      <div class="step-line"></div>
+      <div class="step-indicator" id="step-nav-3"><span class="step-num">3</span> Speed</div>
+      <div class="step-line"></div>
+      <div class="step-indicator" id="step-nav-4"><span class="step-num">4</span> Payment</div>
+      <div class="step-line"></div>
+      <div class="step-indicator" id="step-nav-5"><span class="step-num">5</span> Confirm</div>
+    </div>
+
+    <div class="checkout-modal-body">
+      
+      <!-- Left: Form Steps -->
+      <div class="checkout-form-col">
+        
+        <!-- STEP 1: PATRON CONTACT -->
+        <div class="checkout-step-panel active" id="checkout-step-1">
+          <h3 class="step-title">01. Patron Contact & Credentials</h3>
+          <p class="step-desc">Enter where we should transmit your insured provenance and tracking certificate.</p>
+          
+          <div class="form-grid-2">
+            <div class="form-group">
+              <label>First Name</label>
+              <input type="text" id="chk-fname" value="Johnathan" required>
+            </div>
+            <div class="form-group">
+              <label>Last Name</label>
+              <input type="text" id="chk-lname" value="Sterling" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Email Address for Escrow Tracking</label>
+            <input type="email" id="chk-email" value="johnathan.sterling@valence.luxury" required>
+          </div>
+          <div class="form-group">
+            <label>Mobile Number (For Courier White-Glove Dispatch)</label>
+            <input type="tel" id="chk-phone" value="+1 (212) 555-0194" required>
+          </div>
+
+          <div class="step-nav-buttons">
+            <div></div>
+            <button class="btn-primary-gradient" onclick="nextCheckoutStep(2)">Continue to Shipping Address →</button>
+          </div>
+        </div>
+
+        <!-- STEP 2: SHIPPING ADDRESS -->
+        <div class="checkout-step-panel" id="checkout-step-2">
+          <h3 class="step-title">02. Destination Address</h3>
+          <p class="step-desc">Direct insured courier delivery to your residence or private collection vault.</p>
+
+          <div class="form-group">
+            <label>Street Address</label>
+            <input type="text" id="chk-street" value="740 Park Avenue, Suite 14B" required>
+          </div>
+          <div class="form-grid-3">
+            <div class="form-group">
+              <label>City</label>
+              <input type="text" id="chk-city" value="New York" required>
+            </div>
+            <div class="form-group">
+              <label>State / Canton</label>
+              <input type="text" id="chk-state" value="NY" required>
+            </div>
+            <div class="form-group">
+              <label>Postal Code</label>
+              <input type="text" id="chk-postal" value="10021" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Country / Territory</label>
+            <select id="chk-country">
+              <option value="United States">United States</option>
+              <option value="Switzerland">Switzerland</option>
+              <option value="United Kingdom">United Kingdom</option>
+              <option value="Germany">Germany</option>
+              <option value="United Arab Emirates">United Arab Emirates</option>
+              <option value="Japan">Japan</option>
+            </select>
+          </div>
+
+          <div class="step-nav-buttons">
+            <button class="btn-outline-glass" onclick="prevCheckoutStep(1)">← Back to Contact</button>
+            <button class="btn-primary-gradient" onclick="nextCheckoutStep(3)">Select Delivery Tier →</button>
+          </div>
+        </div>
+
+        <!-- STEP 3: DELIVERY SPEED -->
+        <div class="checkout-step-panel" id="checkout-step-3">
+          <h3 class="step-title">03. Courier Service & Insurance Level</h3>
+          <p class="step-desc">Select how each seller's atelier will dispatch your acquisition.</p>
+
+          <div class="shipping-tiers-list">
+            
+            <label class="shipping-tier-card is-selected">
+              <input type="radio" name="shipping-tier" value="standard" checked onchange="updateCheckoutShippingSpeed('standard')">
+              <div class="tier-card-content">
+                <div class="tier-top">
+                  <span class="tier-name">Complimentary Insured Express</span>
+                  <span class="tier-price">$0.00</span>
+                </div>
+                <p class="tier-lead">3–5 Business Days via DHL Express Worldwide with tracking & signature.</p>
+              </div>
+            </label>
+
+            <label class="shipping-tier-card">
+              <input type="radio" name="shipping-tier" value="priority" onchange="updateCheckoutShippingSpeed('priority')">
+              <div class="tier-card-content">
+                <div class="tier-top">
+                  <span class="tier-name">Priority Armored Overnight</span>
+                  <span class="tier-price">+$45.00</span>
+                </div>
+                <p class="tier-lead">Next-Morning 10:30 AM Delivery via FedEx Custom Critical with temperature control.</p>
+              </div>
+            </label>
+
+            <label class="shipping-tier-card">
+              <input type="radio" name="shipping-tier" value="white-glove" onchange="updateCheckoutShippingSpeed('white-glove')">
+              <div class="tier-card-content">
+                <div class="tier-top">
+                  <span class="tier-name">White-Glove Private Valet</span>
+                  <span class="tier-price">+$120.00</span>
+                </div>
+                <p class="tier-lead">Personal uniformed courier inside residence unboxing and certificate presentation.</p>
+              </div>
+            </label>
+
+          </div>
+
+          <div class="step-nav-buttons">
+            <button class="btn-outline-glass" onclick="prevCheckoutStep(2)">← Back to Address</button>
+            <button class="btn-primary-gradient" onclick="nextCheckoutStep(4)">Proceed to Payment →</button>
+          </div>
+        </div>
+
+        <!-- STEP 4: PAYMENT (SIMULATED SECURE) -->
+        <div class="checkout-step-panel" id="checkout-step-4">
+          <h3 class="step-title">04. Escrow Safe Payment Method</h3>
+          <p class="step-desc">Simulated portfolio demo. No live funds are debited.</p>
+
+          <div class="payment-tabs-row">
+            <button class="payment-tab-btn active" id="pay-tab-card" onclick="selectPaymentTab('card')">💳 Credit / Debit</button>
+            <button class="payment-tab-btn" id="pay-tab-crypto" onclick="selectPaymentTab('crypto')">⛓️ Crypto / USDC</button>
+            <button class="payment-tab-btn" id="pay-tab-apple" onclick="selectPaymentTab('apple')"> Apple Pay / One-Touch</button>
+          </div>
+
+          <!-- Card Form -->
+          <div class="payment-content active" id="payment-content-card">
+            <div class="simulated-card-preview">
+              <div class="card-chip"></div>
+              <div class="card-number-display" id="disp-card-num">•••• •••• •••• 8842</div>
+              <div class="card-meta-row">
+                <div>
+                  <span class="card-lbl">CARD HOLDER</span>
+                  <span class="card-val" id="disp-card-name">JOHNATHAN STERLING</span>
+                </div>
+                <div>
+                  <span class="card-lbl">EXPIRES</span>
+                  <span class="card-val">09/29</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Name On Card</label>
+              <input type="text" id="pay-card-name" value="Johnathan Sterling" oninput="document.getElementById('disp-card-name').textContent = this.value.toUpperCase() || 'VALUED PATRON'">
+            </div>
+            <div class="form-group">
+              <label>Card Number (Simulated Safe Demo)</label>
+              <input type="text" id="pay-card-num" value="4242 •••• •••• 8842" maxlength="19">
+            </div>
+            <div class="form-grid-2">
+              <div class="form-group">
+                <label>Expiration</label>
+                <input type="text" value="09/29" placeholder="MM/YY">
+              </div>
+              <div class="form-group">
+                <label>CVV / CVC</label>
+                <input type="password" value="888" maxlength="4">
+              </div>
+            </div>
+          </div>
+
+          <!-- Crypto / USDC Form -->
+          <div class="payment-content" id="payment-content-crypto" style="display:none;">
+            <div class="crypto-box">
+              <span class="crypto-icon">🪙</span>
+              <h4>Instant Zero-Fee Escrow Settlement</h4>
+              <p>Direct transaction via Ethereum or Polygon USDC vault.</p>
+              <div class="crypto-address-box">
+                <code>0x71C...88F9A (VALENCE Escrow Contract)</code>
+              </div>
+              <span class="badge-green">Contract Pre-Approved for Demo</span>
+            </div>
+          </div>
+
+          <!-- Apple Pay Form -->
+          <div class="payment-content" id="payment-content-apple" style="display:none;">
+            <div class="apple-pay-box">
+              <button class="btn-apple-pay" onclick="simulateOneTouchPay()">
+                 Pay with Passkey / Face ID
+              </button>
+              <p class="apple-pay-sub">Pre-authorized via Apple Secure Enclave</p>
+            </div>
+          </div>
+
+          <div class="step-nav-buttons">
+            <button class="btn-outline-glass" onclick="prevCheckoutStep(3)">← Back to Delivery</button>
+            <button class="btn-primary-gradient" onclick="nextCheckoutStep(5)">Review Final Order →</button>
+          </div>
+        </div>
+
+        <!-- STEP 5: REVIEW & EXECUTE -->
+        <div class="checkout-step-panel" id="checkout-step-5">
+          <h3 class="step-title">05. Final Order Review & Escrow Authorization</h3>
+          <p class="step-desc">Please verify items from each independent seller before placing order.</p>
+
+          <div class="review-details-box">
+            <div class="review-row">
+              <span class="r-label">Patron:</span>
+              <span class="r-val" id="rev-patron-name">Johnathan Sterling</span>
+            </div>
+            <div class="review-row">
+              <span class="r-label">Delivery Address:</span>
+              <span class="r-val" id="rev-delivery-address">740 Park Avenue, New York, NY</span>
+            </div>
+            <div class="review-row">
+              <span class="r-label">Selected Shipping:</span>
+              <span class="r-val" id="rev-shipping-type">Insured Express Courier ($0.00)</span>
+            </div>
+            <div class="review-row">
+              <span class="r-label">Payment Source:</span>
+              <span class="r-val" id="rev-payment-source">Mastercard •••• 8842 (Escrow Hold)</span>
+            </div>
+          </div>
+
+          <div class="checkout-terms-checkbox">
+            <label>
+              <input type="checkbox" id="chk-accept-terms" checked>
+              <span>I acknowledge that payment is held in neutral escrow until my inspection period concludes.</span>
+            </label>
+          </div>
+
+          <div class="step-nav-buttons">
+            <button class="btn-outline-glass" onclick="prevCheckoutStep(4)">← Back to Payment</button>
+            <button class="btn-place-order-success" onclick="executeOrderPlacement()">
+              <span>AUTHORIZE ESCROW & PLACE ORDER</span>
+              <span class="total-badge" id="rev-final-button-total">$0.00</span>
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Right: Sticky Order Summary Mini-Col -->
+      <div class="checkout-summary-col">
+        <h4 class="summary-col-title">Order Breakdown</h4>
+        <div class="checkout-mini-items" id="checkout-mini-items">
+          <!-- Dynamically populated -->
+        </div>
+
+        <div class="checkout-mini-totals">
+          <div class="c-total-row"><span>Items Subtotal</span><span id="chk-mini-subtotal">$0.00</span></div>
+          <div class="c-total-row" id="chk-mini-discount-row" style="display:none;"><span>Promo Savings</span><span id="chk-mini-discount">-$0.00</span></div>
+          <div class="c-total-row"><span>Combined Shipping</span><span id="chk-mini-shipping">$0.00</span></div>
+          <div class="c-total-row"><span>Escrow Tax (8.5%)</span><span id="chk-mini-tax">$0.00</span></div>
+          <div class="c-total-grand"><span>Total</span><span id="chk-mini-grand">$0.00</span></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- 5. ORDER CONFIRMATION & LIVE TRACKING MODAL -->
+  <div class="modal-backdrop" id="tracking-modal-backdrop" onclick="closeTrackingModal()"></div>
+  <div class="tracking-modal-container" id="tracking-modal">
+    <div class="tracking-header">
+      <div>
+        <span class="badge-green">AUTHENTICATED ESCROW DISPATCH</span>
+        <h2 class="drawer-title" id="track-order-id-title">Order #VLX-89421-US</h2>
+        <p class="track-carrier-info" id="track-carrier-meta">Courier: DHL Express Priority • Air Waybill #9842109841</p>
+      </div>
+      <button class="modal-close-icon" onclick="closeTrackingModal()">✕</button>
+    </div>
+
+    <div class="tracking-body">
+      
+      <!-- Interactive Milestone Stepper -->
+      <div class="milestones-timeline-wrap">
+        <div class="milestone-line-progress" id="milestone-progress-bar" style="width: 60%;"></div>
+        
+        <div class="milestone-node completed" id="m-step-1">
+          <div class="m-icon">✓</div>
+          <div class="m-label">Order Placed</div>
+          <span class="m-time">Today, 09:14 AM</span>
+        </div>
+        
+        <div class="milestone-node completed" id="m-step-2">
+          <div class="m-icon">✓</div>
+          <div class="m-label">Confirmed & Escrowed</div>
+          <span class="m-time">Today, 09:16 AM</span>
+        </div>
+
+        <div class="milestone-node completed" id="m-step-3">
+          <div class="m-icon">✓</div>
+          <div class="m-label">Atelier Quality Audit</div>
+          <span class="m-time">Today, 11:30 AM</span>
+        </div>
+
+        <div class="milestone-node active" id="m-step-4">
+          <div class="m-icon">✈️</div>
+          <div class="m-label">Dispatched / In Flight</div>
+          <span class="m-time">Transit Hub, Zurich</span>
+        </div>
+
+        <div class="milestone-node" id="m-step-5">
+          <div class="m-icon">🏎️</div>
+          <div class="m-label">Out for Valet Delivery</div>
+          <span class="m-time">Expected Tomorrow</span>
+        </div>
+
+        <div class="milestone-node" id="m-step-6">
+          <div class="m-icon">🏠</div>
+          <div class="m-label">Delivered & Inspected</div>
+          <span class="m-time">Pending Inspection</span>
+        </div>
+
+      </div>
+
+      <!-- Tracking Details Grid -->
+      <div class="track-details-grid">
+        <div class="track-detail-card">
+          <span class="t-lbl">Sellers Included:</span>
+          <div id="track-sellers-list" class="t-val">Apex Luxe Audio, Kobenhavn Design</div>
+        </div>
+        <div class="track-detail-card">
+          <span class="t-lbl">Estimated Arrival:</span>
+          <div class="t-val highlight">Tomorrow by 14:00 PM EST</div>
+        </div>
+        <div class="track-detail-card">
+          <span class="t-lbl">Delivery Address:</span>
+          <div class="t-val" id="track-address-val">740 Park Avenue, New York, NY 10021</div>
+        </div>
+      </div>
+
+      <div class="tracking-actions-bar">
+        <button class="btn-primary-gradient" onclick="closeTrackingModal(); switchView('customer-dashboard'); showCustomerTab('orders');">
+          View In Customer Order History
+        </button>
+        <button class="btn-outline-glass" onclick="showToast('Air Waybill Certificate downloaded to your system', 'success')">
+          📄 Download Insurance Provenance PDF
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- 6. COMPREHENSIVE ADD / EDIT PRODUCT MODAL -->
+  <div class="modal-backdrop" id="add-product-backdrop" onclick="closeAddProductModal()"></div>
+  <div class="add-product-modal-container" id="add-product-modal" role="dialog" aria-modal="true" aria-labelledby="add-product-modal-title">
+    <div class="modal-header-product">
+      <div>
+        <span class="badge-violet" id="add-product-badge">CATALOG GOVERNANCE</span>
+        <h3 id="add-product-modal-title" class="product-form-heading">Add New Masterpiece / Product</h3>
+        <p class="modal-form-sub" id="add-product-modal-desc">Publish directly to global catalog, shop listing, and authenticated inventory.</p>
+      </div>
+      <button class="modal-close-icon" onclick="closeAddProductModal()" aria-label="Close Modal">✕</button>
+    </div>
+
+    <form class="add-product-form-grid" id="product-master-form" onsubmit="event.preventDefault(); handleSaveProduct();">
+      <input type="hidden" id="prod-edit-id" value="">
+
+      <!-- Basic Info Row -->
+      <div class="form-row-2col">
+        <div class="form-group">
+          <label for="new-prod-title">Product Name <span class="required-star">*</span></label>
+          <input type="text" id="new-prod-title" placeholder="e.g. Nike Air Max Titanium Horizon" required>
+        </div>
+        <div class="form-group">
+          <label for="new-prod-sku">Product SKU <span class="required-star">*</span></label>
+          <input type="text" id="new-prod-sku" placeholder="e.g. VLX-NK-8921" required>
+        </div>
+      </div>
+
+      <!-- Classification & Status Row -->
+      <div class="form-row-3col">
+        <div class="form-group">
+          <label for="new-prod-category">Product Category <span class="required-star">*</span></label>
+          <select id="new-prod-category" required>
+            <option value="Audio">Audio (Bespoke Hi-Fi)</option>
+            <option value="Fashion">Fashion (Haute Couture & Horology)</option>
+            <option value="Electronics">Electronics (Flagships & Laptops)</option>
+            <option value="Home">Home (Architectural Living)</option>
+            <option value="Gaming">Gaming (Cybernetic Systems)</option>
+            <option value="Automotive">Automotive (Supercar Concierge)</option>
+            <option value="Beauty">Beauty (Alchemy & Grooming)</option>
+            <option value="Shoes">Shoes & Footwear</option>
+            <option value="Digital">Digital & Provenance</option>
+            <option value="Accessories">Jewelry & Accessories</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="new-prod-seller">Brand / Atelier <span class="required-star">*</span></label>
+          <input type="text" id="new-prod-seller" placeholder="e.g. Nike Luxe Atelier / Apex Luxe Audio" required>
+        </div>
+        <div class="form-group">
+          <label for="new-prod-status">Product Status <span class="required-star">*</span></label>
+          <select id="new-prod-status">
+            <option value="Active">Active (In Catalog Feed)</option>
+            <option value="In Stock">In Stock Reserve</option>
+            <option value="Low Stock">Low Stock Notice</option>
+            <option value="Draft">Draft / Delisted</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Commercial Pricing & Stock Row -->
+      <div class="form-row-3col">
+        <div class="form-group">
+          <label for="new-prod-price">List Price ($ USD) <span class="required-star">*</span></label>
+          <div class="input-currency-wrapper">
+            <span class="currency-prefix">$</span>
+            <input type="number" id="new-prod-price" placeholder="499.00" step="0.01" min="0" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="new-prod-oldprice">Discount / Original Price ($ USD)</label>
+          <div class="input-currency-wrapper">
+            <span class="currency-prefix">$</span>
+            <input type="number" id="new-prod-oldprice" placeholder="599.00" step="0.01" min="0">
+          </div>
+          <span class="input-helper-text">Leave blank if no discount</span>
+        </div>
+        <div class="form-group">
+          <label for="new-prod-stock">Stock Quantity <span class="required-star">*</span></label>
+          <input type="number" id="new-prod-stock" value="10" min="0" required>
+        </div>
+      </div>
+
+      <!-- Description -->
+      <div class="form-group">
+        <label for="new-prod-desc">Product Description <span class="required-star">*</span></label>
+        <textarea id="new-prod-desc" rows="3" placeholder="Describe craftsmanship, acoustic fidelity, genuine materials, and provenance..." required></textarea>
+      </div>
+
+      <!-- Specifications (Comma-separated) -->
+      <div class="form-group">
+        <label for="new-prod-specs">Product Specifications & Attributes (Comma-separated)</label>
+        <input type="text" id="new-prod-specs" placeholder="Material: Titanium Grade-5, Weight: 310g, Battery: 50h Reserve, Origin: Handcrafted">
+      </div>
+
+      <!-- PRODUCT IMAGE UPLOAD SECTION (VERY IMPORTANT) -->
+      <div class="product-image-upload-wrapper">
+        <div class="upload-section-header">
+          <div>
+            <label class="upload-section-title">Product Images & Gallery <span class="required-star">*</span></label>
+            <p class="upload-section-sub">Upload high-resolution pictures from your device or add web image URLs. At least 1 image is required.</p>
+          </div>
+          <span class="images-count-badge" id="images-count-indicator">0 Images Selected</span>
+        </div>
+
+        <!-- Dropzone / Browse Area -->
+        <div class="image-dropzone-box" id="image-dropzone-box" onclick="triggerFileInput()">
+          <input type="file" id="prod-file-input" accept="image/*" multiple style="display:none;" onchange="handleDeviceImageSelect(this.files)">
+          <div class="dropzone-icon">📸</div>
+          <div class="dropzone-text">
+            <strong>Click to upload product pictures</strong> or drag & drop image files
+            <span class="dropzone-hint">Supports JPEG, PNG, WEBP, GIF (Select multiple photos at once)</span>
+          </div>
+          <button type="button" class="btn-outline-glass btn-sm" onclick="event.stopPropagation(); triggerFileInput();">
+            Browse Device Files 📁
+          </button>
+        </div>
+
+        <!-- Alternative: Direct Web Image URL Input -->
+        <div class="url-input-bar">
+          <span class="url-bar-label">Or Add Image via URL:</span>
+          <input type="url" id="prod-image-url-input" placeholder="https://images.unsplash.com/... or direct image link">
+          <button type="button" class="btn-outline-glass btn-sm" onclick="handleAddImageUrl()">+ Add URL</button>
+        </div>
+
+        <!-- Image Previews Container -->
+        <div class="images-preview-tray" id="images-preview-tray">
+          <!-- Dynamic thumbnails with primary badge, set-primary, and delete buttons -->
+        </div>
+        <div class="image-validation-error" id="image-validation-error" style="display:none;">
+          ⚠️ Please upload or provide at least one product picture before saving.
+        </div>
+      </div>
+
+      <!-- Action Buttons Row -->
+      <div class="modal-buttons-row">
+        <button type="button" class="btn-outline-glass" onclick="closeAddProductModal()">Cancel</button>
+        <button type="submit" class="btn-primary-gradient" id="btn-save-product-submit">
+          <span>Add Product</span>
+        </button>
+      </div>
+    </form>
+  </div>
+
+
+  <!-- DELETE CONFIRMATION MODAL -->
+  <div class="modal-backdrop" id="delete-confirm-backdrop" onclick="closeDeleteConfirmModal()"></div>
+  <div class="delete-confirm-modal" id="delete-confirm-modal" role="dialog" aria-modal="true">
+    <div class="modal-header-simple">
+      <h3 style="color:var(--ruby-rose); display:flex; align-items:center; gap:0.5rem; font-size:1.15rem;">
+        <span>⚠️</span> Confirm Product Deletion
+      </h3>
+      <button class="modal-close-icon" onclick="closeDeleteConfirmModal()">✕</button>
+    </div>
+    <div class="delete-confirm-body">
+      <p style="font-size:0.95rem; line-height:1.5; margin-bottom:1rem; color:var(--text-secondary);">
+        Are you sure you want to delete this product?
+      </p>
+      <div id="delete-product-preview-card" class="delete-product-preview-card">
+        <!-- Dynamically injected target product card -->
+      </div>
+      <p style="font-size:0.8rem; color:var(--ruby-rose); margin-top:1rem;">
+        This action cannot be undone. The product will be completely removed from the database, shop listing, and cart.
+      </p>
+    </div>
+    <div class="modal-buttons-row" style="margin-top:1.5rem;">
+      <button type="button" class="btn-outline-glass" onclick="closeDeleteConfirmModal()">Cancel</button>
+      <button type="button" class="btn-delete-confirm-action" id="btn-confirm-delete-action" onclick="executeDeleteProduct()">
+        <span>Delete Product</span>
+      </button>
+    </div>
+  </div>
+
+
+  <!-- 7. ADMIN CREATE PROMO MODAL -->
+  <div class="modal-backdrop" id="promo-modal-backdrop" onclick="closePromoModal()"></div>
+  <div class="promo-modal" id="promo-modal">
+    <div class="modal-header-simple">
+      <h3>Create Platform Promotional Coupon</h3>
+      <button class="modal-close-icon" onclick="closePromoModal()">✕</button>
+    </div>
+    <form class="promo-form" onsubmit="event.preventDefault(); handleCreatePromoCode();">
+      <div class="form-group">
+        <label>Coupon Code (Alphanumeric)</label>
+        <input type="text" id="promo-code" placeholder="e.g. VIPSUMMER" uppercase required>
+      </div>
+      <div class="form-grid-2">
+        <div class="form-group">
+          <label>Discount Type</label>
+          <select id="promo-type">
+            <option value="percent">Percentage Off (%)</option>
+            <option value="fixed">Fixed Dollar Off ($)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Discount Value</label>
+          <input type="number" id="promo-value" placeholder="20" required>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Minimum Order Spend ($)</label>
+        <input type="number" id="promo-min" placeholder="250" value="0">
+      </div>
+      <div class="modal-buttons-row">
+        <button type="button" class="btn-outline-glass" onclick="closePromoModal()">Cancel</button>
+        <button type="submit" class="btn-primary-gradient">Activate Promo Code</button>
+      </div>
+    </form>
+  </div>
+
+
+  <!-- 8. GLOBAL TOAST NOTIFICATION CONTAINER -->
+  <div class="toast-stack-container" id="toast-container" aria-live="polite"></div>
+
+  <!-- Application Logic Scripts -->
+  <script src="app.js"></script>
+</body>
+</html>
